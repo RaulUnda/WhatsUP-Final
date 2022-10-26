@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="56.0" prefWidth="330.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.whatsup.Client.Session">
+    <children>
+        <StackPane layoutY="67.0" prefHeight="494.0" prefWidth="330.0">
+            <children>
+                <Pane fx:id="pn_pf" prefHeight="448.0" prefWidth="335.0" style="-fx-background-color: #302E54;">
+                    <children>
+                        <Label layoutX="9.0" layoutY="93.0" text="Alias: " textFill="#EADDDD">
+                            <font>
+                                <Font name="Arial" size="19.0" />
+                            </font>
+                        </Label>
+                        <Label layoutX="9.0" layoutY="133.0" text="Email: " textFill="#EADDDD">
+                            <font>
+                                <Font name="Arial" size="19.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="lbl_Name" layoutX="129.0" layoutY="93.0" opacity="0.0" textFill="EADDDD" wrapText="true">
+                            <font>
+                                <Font size="19.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="lbl_Email" layoutX="129.0" layoutY="133.0" opacity="0.0" textFill="EADDDD">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </Pane>
+                <Pane fx:id="pn_chat" prefHeight="200.0" prefWidth="330.0" style="-fx-background-color: #302E54;">
+                    <children>
+                        <TextArea fx:id="TA_Room" editable="false" layoutX="-7.0" prefHeight="325.0" prefWidth="339.0" style="-fx-baxkground-color: #302E54;" styleClass="text-area" stylesheets="@../Style/style.css" wrapText="true">
+                            <font>
+                                <Font name="Arial" size="16.0" />
+                            </font>
+                        </TextArea>
+                        <AnchorPane layoutY="449.0" prefHeight="45.0" prefWidth="330.0" style="-fx-background-color: #302E54;">
+                     <children>
+                        <TextField fx:id="tf_key" layoutX="150.0" layoutY="13.0" opacity="0.0" prefHeight="25.0" prefWidth="74.0" promptText="Llave" styleClass="msgBox" stylesheets="@../Style/style.css" />
+                        <Label fx:id="lbl_key" layoutX="70.0" layoutY="13.0" opacity="0.0" text="Ingresa la llave:" textFill="#b9f0b7">
+                           <font>
+                              <Font name="Arial" size="11.0" />
+                           </font></Label>
+                     </children></AnchorPane>
+                          <ImageView fitHeight="42.0" fitWidth="73.0" layoutX="281.0" layoutY="328.0" onMouseClicked="#handleSendEvent" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                  <Image url="@../Imgs/send.png" />
+                              </image>
+                          </ImageView>
+                          <TextField fx:id="tf_msgField" layoutY="328.0" onKeyPressed="#sendMessageByKey" prefHeight="38.0" prefWidth="274.0" promptText="Escribe el mensaje..." styleClass="msgBox" stylesheets="@../Style/style.css">
+                              <font>
+                                  <Font name="Arial" size="19.0" />
+                              </font>
+                          </TextField>
+                  <Button fx:id="btn_plain" layoutX="10.0" layoutY="370.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="74.0" text="Texto Plano">
+                     <font>
+                        <Font name="Arial" size="11.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btn_sym" layoutX="98.0" layoutY="370.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="107.0" text="Cifrado Simetrico">
+                     <font>
+                        <Font name="Arial" size="11.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btn_asym" layoutX="216.0" layoutY="370.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="107.0" text="Cifrado Asimetrico">
+                     <font>
+                        <Font name="Arial" size="11.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btn_firm" layoutX="66.0" layoutY="411.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="78.0" text="Firma digital">
+                     <font>
+                        <Font name="Arial" size="11.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btn_cert" layoutX="177.0" layoutY="411.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="78.0" text="Sobre digital">
+                     <font>
+                        <Font name="Arial" size="11.0" />
+                     </font>
+                  </Button>
+                    </children>
+                </Pane>
+            </children>
+        </StackPane>
+        <AnchorPane prefHeight="67.0" prefWidth="330.0" style="-fx-background-color:#302E54;">
+            <children>
+                <Label fx:id="lbl_ClientName" layoutX="81.0" layoutY="22.0" prefHeight="24.0" prefWidth="93.0" text="Nombre de usuario" textFill="#B9F0B7" wrapText="true">
+                    <font>
+                        <Font name="Arial" size="19.0" />
+                    </font>
+                </Label>
+                <Button fx:id="btn_profile" layoutX="249.0" layoutY="20.0" mnemonicParsing="false" onAction="#handleProfileButton" styleClass="ButtonAll" stylesheets="@../Style/style.css" text="Perfil">
+                    <font>
+                        <Font name="Arial" size="15.0" />
+                    </font>
+                </Button>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>

@@ -1,0 +1,54 @@
+.Btn_back:hover{
+    -fx-opacity:1;
+}
+
+.txt_login {
+    -fx-text-fill: #f4f4f4;
+}
+
+.txt_login:focused{
+    -fx-border-color: transparent transparent #27B246 transparent;
+    -fx-text-fill: #f4f4f4;
+}
+
+.btnLogin{
+    -fx-background-color: #62727B;
+}
+
+.btnLogin:hover{
+    -fx-background-color: #6F7D85 !important;
+    -fx-text-fill: #4773C6;
+}
+
+.text-area{
+    -fx-font-family: Arial, sans-serif;
+    -fx-highlight-fill: #ffff;
+    -fx-highlight-text-fill: #fff;
+    -fx-text-fill: #ffff;
+    -fx-border-color: #000;
+    -fx-background-insets: 0;
+    -fx-background-color: transparent, white, transparent, white;
+}
+
+.text-area .content{
+    -fx-background-color: transparent, #165575;
+}
+
+.msgBox{
+    -fx-background-color: #5B6C74;
+        -fx-background-radius: 70;
+        -fx-font-size: 15px;
+        -fx-text-fill: #eeeeee;
+        -fx-font-family: Arial !important;
+}
+
+.ButtonAll{
+    -fx-background-color:  #62727B;
+    -fx-background-radius: 90;
+}
+
+.ButtonAll:hover{
+    -fx-background-color: #91A9B4;
+    -fx-text-fill: #000000;
+}
+
