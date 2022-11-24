@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.whatsup.Client.Certs">
+    <children>
+        <TextArea fx:id="TA_cert" layoutX="241.0" layoutY="63.0" prefHeight="200.0" prefWidth="349.0" />
+        <TextField fx:id="TF_CName" layoutX="42.0" layoutY="104.0" />
+        <Label layoutX="42.0" layoutY="80.0" text="Nombre del usuario" />
+        <Label layoutX="42.0" layoutY="183.0" text="Llave Publica" />
+        <TextField fx:id="TF_CKey" layoutX="42.0" layoutY="206.0" />
+        <Button fx:id="btn_open" layoutX="372.0" layoutY="282.0" mnemonicParsing="false" text="Abrir Certificado" />
+    </children>
+</AnchorPane>

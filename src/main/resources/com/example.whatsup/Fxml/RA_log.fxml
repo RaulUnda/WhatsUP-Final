@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.whatsup.Server.RA_controller">
+   <Label layoutX="143.0" layoutY="30.0" text="Registration Authority Log">
+      <font>
+         <Font name="Cambria Italic" size="26.0" />
+      </font>
+   </Label>
+   <TextArea fx:id="TA_logs" layoutX="39.0" layoutY="62.0" prefHeight="319.0" prefWidth="522.0" />
+</AnchorPane>
