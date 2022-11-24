@@ -42,7 +42,7 @@
                                 <Font size="28.0" />
                             </font>
                         </Label>
-                        <Button layoutX="63.0" layoutY="387.0" mnemonicParsing="false" onAction="#registraton" prefHeight="35.0" prefWidth="208.0" style="-fx-background-radius: 90; -fx-bakground-color: #7A878D;" styleClass="btnLogin" stylesheets="@../Style/style.css" text="Crear cuenta" textFill="#8C2800">
+                        <Button layoutX="63.0" layoutY="387.0" mnemonicParsing="false" onAction="#registration" prefHeight="35.0" prefWidth="208.0" style="-fx-background-radius: 90; -fx-bakground-color: #7A878D;" styleClass="btnLogin" stylesheets="@../Style/style.css" text="Crear cuenta" textFill="#8C2800">
                             <font>
                                 <Font name="Beirut Regular" size="18.0" />
                             </font>

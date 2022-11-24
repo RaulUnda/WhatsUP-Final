@@ -5,4 +5,8 @@ public class User {
     public String Fullname;
     public String password;
     public String email;
+    public String firm;
+    public String cert_name;
+    public String RA_2;
 }
+

@@ -57,7 +57,7 @@ public class Client_Controller {
     public static String user, pswd;
     public static ArrayList<User> loggedUsers = new ArrayList<>();
     public static ArrayList<User> users = new ArrayList<>();
-    public void registraton(){
+    public void registration(){
         if(!Name_reg.getText().equalsIgnoreCase("") && !Username_reg.getText().equalsIgnoreCase("") && !Pswd_reg.getText().equalsIgnoreCase("") && !Email_reg.getText().equalsIgnoreCase("")){
             if(checkUser(Username_reg.getText())){
                 if (checkEmail(Email_reg.getText())){
@@ -66,6 +66,9 @@ public class Client_Controller {
                     newUser.password = Pswd_reg.getText();
                     newUser.Fullname = Name_reg.getText();
                     newUser.email = Email_reg.getText();
+                    newUser.firm = null;
+                    newUser.RA_2 = "";
+
                     users.add(newUser);
                     lbl_Guide.setOpacity(1);
                     lbl_Result.setOpacity(1);

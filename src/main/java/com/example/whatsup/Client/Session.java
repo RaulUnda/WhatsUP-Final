@@ -1,10 +1,11 @@
 package com.example.whatsup.Client;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.NodeOrientation;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -12,13 +13,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
 import java.awt.Desktop;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static com.example.whatsup.Client.Client_Controller.user;
@@ -52,7 +57,7 @@ public class Session extends Thread implements Initializable {
     @FXML
     private Button btn_firm;
     @FXML
-    private Button btn_cert;
+    private Button btn_sobr;
     @FXML
     private Label lbl_key;
     @FXML
@@ -65,6 +70,8 @@ public class Session extends Thread implements Initializable {
     BufferedReader bufferedReader;
     PrintWriter printWriter;
     Socket socket;
+    Socket socketlog;
+    BufferedWriter bufferedWriter;
 
     public void connectSocket(){
         try{
@@ -73,6 +80,8 @@ public class Session extends Thread implements Initializable {
             System.out.println("Socket conectado al servidor");
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             printWriter = new PrintWriter(socket.getOutputStream(), true);
+            socketlog = new Socket(host, 3600);
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(socketlog.getOutputStream()));
             this.start();
         } catch (IOException e){
             e.printStackTrace();
@@ -107,9 +116,7 @@ public class Session extends Thread implements Initializable {
                     encryptmsg = tokens[0];
                     encryptmsg += Encrypt(tokens[1], PubKey);
                     TA_Room.appendText(encryptmsg + "\n");
-                }else {
-                    TA_Room.appendText(tokens[0] + tokens[1] + "\n");
-                }
+                }else{TA_Room.appendText(tokens[0] + tokens[1] + "\n");}
             }
             bufferedReader.close();
             printWriter.close();
@@ -156,7 +163,18 @@ public class Session extends Thread implements Initializable {
 
     public void send(){
         String msg = tf_msgField.getText();
-        printWriter.println(user+ ":~ " + msg);
+        for (User i: users){
+            if (!Objects.equals(i.firm, null)){
+                if (!Objects.equals(i.cert_name, null)){
+                    printWriter.println(user+ ":~ " + msg + "\t[" + i.firm + i.cert_name + "]]");
+                }
+                else{
+                    printWriter.println(user+ ":~ " + msg + "\t" + i.firm + "]");
+                }
+            } else {
+                printWriter.println(user+ ":~ " + msg);
+            }
+        }
         TA_Room.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
         TA_Room.appendText("Yo: " + msg + "\n");
         tf_msgField.setText("");
@@ -200,92 +218,100 @@ public class Session extends Thread implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle){
         lbl_ClientName.setText(user);
         connectSocket();
-        btn_asym.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                lbl_key.setOpacity(1);
-                tf_key.setOpacity(1);
-                PrivKey = 0;
-                PubKey = Integer.parseInt(tf_key.getText());
-            }
+        btn_asym.setOnAction(event -> {
+            lbl_key.setOpacity(1);
+            tf_key.setOpacity(1);
+            PrivKey = 0;
+            PubKey = Integer.parseInt(tf_key.getText());
         });
-        btn_sym.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                lbl_key.setOpacity(0);
-                tf_key.setOpacity(0);
-                PrivKey = 13;
-                PubKey = 0;
-            }
+        btn_sym.setOnAction(event -> {
+            lbl_key.setOpacity(0);
+            tf_key.setOpacity(0);
+            PrivKey = 13;
+            PubKey = 0;
         });
-        btn_plain.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                lbl_key.setOpacity(0);
-                tf_key.setOpacity(0);
-                PrivKey = 0;
-                PubKey = 0;
-            }
+        btn_plain.setOnAction(event -> {
+            lbl_key.setOpacity(0);
+            tf_key.setOpacity(0);
+            PrivKey = 0;
+            PubKey = 0;
         });
-        btn_cert.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(firm != null && PubKey != 0){
-                    try {
-                        File user_cert = new File("src/main/java/com/example/whatsup/Certificados/"+user + "_cert.txt");
-                        if (!Desktop.isDesktopSupported()){
-                            System.out.println("Desktop is not supported");
-                            return;
-                        }
-                        Desktop desktop = Desktop.getDesktop();
-                        if (user_cert.createNewFile()){
-                            System.out.println("Certificado creado: " + user_cert.getName());
-                            try {
-                                FileWriter write_cert = new FileWriter(user_cert);
-                                write_cert.write("\nFirma: " + firm + "\nNombre: " +
-                                        lbl_Name.getText() + "\nEmail: " + lbl_Email.getText() + "\nLlave: " + PubKey);
-                                write_cert.close();
-                                System.out.println("Se ha escrito el certificado: " + user_cert);
-                                if (user_cert.exists()){desktop.open(user_cert);}
-                            }catch (IOException e){
-                                System.out.println("Error al modificar el certificado");
-                                e.printStackTrace();
-                            }
-                        }else {
-                            System.out.println("Certificado ya existe");
-                        }
-                    }catch (IOException e)
-                    {
-                        System.out.println("Error al crear el certificado");
-                        e.printStackTrace();
+        btn_sobr.setOnAction(event -> {
+            if(firm != null && PubKey != 0){
+                try {
+                    File user_cert = new File("src/main/java/com/example/whatsup/Certificados/"+user + "_cert.txt");
+                    if (!Desktop.isDesktopSupported()){
+                        System.out.println("Desktop is not supported");
+                        return;
                     }
+                    if (user_cert.createNewFile()){
+                        System.out.println("Certificado creado: " + user_cert.getName());
+                        for (User i : users){
+                            i.cert_name = user_cert.getName();
+                            //printWriter.println(state, name, Pub_key, type);
+                            if (i.RA_2.equals("")){
+                                bufferedWriter.write("1," + lbl_ClientName.getText() + ",null,user");
+                                bufferedWriter.newLine();
+                                bufferedWriter.flush();
+                            }else {
+                                String[] token = i.RA_2.split(",");
+                                bufferedWriter.write("2," + token[0] + "," + token[1] +  ",cert");
+                                bufferedWriter.newLine();
+                                bufferedWriter.flush();
+                            }
+                        }
+                        try {
+                            FileWriter write_cert = new FileWriter(user_cert);
+                            write_cert.write("\nFirma: " + firm + "\nNombre: " + lbl_Name.getText() + "\nEmail: " + lbl_Email.getText() + "\nLlave: " + PubKey);
+                            write_cert.close();
+                            System.out.println("Se ha escrito el certificado: " + user_cert);
+                            //if (user_cert.exists()){desktop.open(user_cert);}
+                        }catch (IOException e){
+                            System.out.println("Error al modificar el certificado");
+                            e.printStackTrace();
+                        }
+                    }else {
+                        System.out.println("Certificado ya existe");
+                    }
+                }catch (IOException e)
+                {
+                    System.out.println("Error al crear el certificado");
+                    e.printStackTrace();
+                }
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(Main_App.class.getResource("/com/example.whatsup/Fxml/Certs.fxml"));
+                    Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.setTitle("Abrir certificados");
+                    stage.show();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
-        btn_firm.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (PubKey != 0){
-                    String efirm;
-                    Signature signature;
-                    try {
-                        signature = Signature.getInstance("SHA256withRSA");
-                        SecureRandom secureRandom = new SecureRandom();
-                        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-                        KeyPair keyPair = keyPairGenerator.generateKeyPair();
-                        signature.initSign(keyPair.getPrivate(), secureRandom);
-                        byte[] data = (user+PubKey).getBytes("UTF-8");
-                        signature.update(data);
-                        efirm = String.valueOf(signature.sign());
-                        signature.initVerify(keyPair.getPublic());
-
-                    } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException |
-                             UnsupportedEncodingException e) {
-                        throw new RuntimeException(e);
-                    }
-                    firm = efirm + user + PubKey;
-                    System.out.println("Firma: " + firm);
-                    TA_Room.appendText("**La firma del usuario " + user + " es: " + firm + "**\n");
+        btn_firm.setOnAction(event -> {
+            if (PubKey != 0){
+                String efirm;
+                Signature signature;
+                try {
+                    signature = Signature.getInstance("SHA256withRSA");
+                    SecureRandom secureRandom = new SecureRandom();
+                    KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+                    KeyPair keyPair = keyPairGenerator.generateKeyPair();
+                    signature.initSign(keyPair.getPrivate(), secureRandom);
+                    byte[] data = (user+PubKey).getBytes(StandardCharsets.UTF_8);
+                    signature.update(data);
+                    efirm = String.valueOf(signature.sign());
+                    signature.initVerify(keyPair.getPublic());
+                } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
+                    throw new RuntimeException(e);
+                }
+                firm = efirm + user + PubKey;
+                System.out.println("Firma: " + firm);
+                //TA_Room.appendText("**La firma del usuario " + user + " es: " + firm + "**\n");
+                for (User i: users){
+                    i.firm = firm;
                 }
             }
         });

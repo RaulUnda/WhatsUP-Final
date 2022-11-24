@@ -78,7 +78,7 @@
                         <Font name="Arial" size="11.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn_cert" layoutX="177.0" layoutY="411.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="78.0" text="Sobre digital">
+                  <Button fx:id="btn_sobr" layoutX="177.0" layoutY="411.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="78.0" text="Sobre digital">
                      <font>
                         <Font name="Arial" size="11.0" />
                      </font>
